@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import API from '../../config';
+import { setToken, setProfile, setNickname } from '../../utils';
 import styled from 'styled-components';
 
 const Login = () => {
@@ -20,9 +21,9 @@ const Login = () => {
             const restoken = res.access_token.access_token;
             const profile = res.access_token.profile_image;
             const nickname = res.access_token.kakao_nickname;
-            localStorage.setItem('token', restoken);
-            localStorage.setItem('profile', profile);
-            localStorage.setItem('nickname', nickname);
+            setToken(restoken);
+            setProfile(profile);
+            setNickname(nickname);
             goToMain();
           });
       },
