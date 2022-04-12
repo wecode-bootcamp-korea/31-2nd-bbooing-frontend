@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
+import { getToken, getProfile } from '../../utils';
 import backgroundimg from '../../assets/premium-icon-magnifier-2311526.png';
 import styled from 'styled-components';
 
 const Nav = () => {
-  const token = localStorage.getItem('token');
+  const validtoken = getToken();
 
   return (
     <WrapperHead>
@@ -24,16 +25,12 @@ const Nav = () => {
         </form>
       </SearchArea>
       <GnbRight>
-        {token ? (
+        {!validtoken ? (
           <LoginMenu to="/login">로그인</LoginMenu>
         ) : (
           <LoginWrap>
-            <LoginMenu to="/">수강목록</LoginMenu>
             <LoginMenu to="/wish-list">찜</LoginMenu>
-            <ProfileImg
-              src={`${localStorage.getItem('profile')}`}
-              alt="카카오프로필임시"
-            />
+            <ProfileImg src={getProfile()} alt="카카오프로필임시" />
           </LoginWrap>
         )}
       </GnbRight>
@@ -53,7 +50,9 @@ const WrapperHead = styled.div`
   height: 80px;
   margin: 0 auto;
   padding: 0 32px 0 36px;
+  background-color: #fff;
   border-color: #eeeeee;
+  z-index: 500;
 `;
 
 const LogoImg = styled.img`
