@@ -15,11 +15,11 @@ const Router = () => {
       <Nav />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/VodMain" element={<VodMain />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/LectureList" element={<LectureList />} />
-        <Route path="/LectureDetail" element={<LectureDetail />} />
-        <Route path="/WishList" element={<WishList />} />
+        <Route path="/vod" element={<VodMain />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/lectures" element={<LectureList />} />
+        <Route path="/lectures/:id" element={<LectureDetail />} />
+        <Route path="/wish-list" element={<WishList />} />
       </Routes>
       <Footer />
     </BrowserRouter>
