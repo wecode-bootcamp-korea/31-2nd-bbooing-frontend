@@ -1,5 +1,7 @@
+import React from 'react';
+
 const LectureList = () => {
-  return <div>CourseList</div>;
+  return <div />;
 };
 
 export default LectureList;
