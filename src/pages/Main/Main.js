@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import { FaVideo, FaLocationArrow, FaBook, FaHeart } from 'react-icons/fa';
 
 import LectureSlide from './Components/LectureSlide';
 import MainSlider from './Components/MainSlider';
 
+import { getProfile, getNickName, getToken } from '../../../src/utils';
+
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 
 const Main = () => {
+  const validtoken = getToken();
   const navigate = useNavigate();
   const [currentId, setCurrentId] = useState(1);
   const [isShowed, setIsShowed] = useState(false);
@@ -82,14 +86,26 @@ const Main = () => {
           </LectureContainer>
           <ProfileContainer>
             <Profile>
-              <h3 className="userId">효정님</h3>
-              <h3>반가워요</h3>
-              <p>
-                포인트 <span>0</span>p
-              </p>
-              <button>
-                <StyledFaHeart /> 찜
-              </button>
+              {!validtoken ? (
+                <>
+                  <LoginDescribe>
+                    로그인 하시고 뿌잉의 다양한 튜터를 만나보세요.
+                  </LoginDescribe>
+                  <MainLoginBtn to="/login">뿌잉 로그인</MainLoginBtn>
+                </>
+              ) : (
+                <prifileWrap>
+                  <ProfileImg src={getProfile()} />
+                  <h3 className="userId">{getNickName()} 님</h3>
+                  <h3>반가워요</h3>
+                  <p>
+                    포인트 <span>0</span>p
+                  </p>
+                  <button>
+                    <StyledFaHeart /> 찜
+                  </button>
+                </prifileWrap>
+              )}
             </Profile>
             <Search>
               <h3>핫 트렌드</h3>
@@ -267,4 +283,27 @@ const Search = styled.div`
     border-radius: 3px;
     cursor: pointer;
   }
+`;
+
+const LoginDescribe = styled.p`
+  margin-bottom: 20px;
+  font-weight: ${theme.weightBold};
+`;
+
+const MainLoginBtn = styled(Link)`
+  display: block;
+  padding: 12px 0;
+  border-radius: 6px;
+  text-align: center;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 24px;
+  background-color: #ff0045;
+`;
+
+const ProfileImg = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
 `;
