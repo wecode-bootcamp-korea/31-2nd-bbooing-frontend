@@ -52,7 +52,8 @@ const WrapperHead = styled.div`
   padding: 0 32px 0 36px;
   background-color: #fff;
   border-color: #eeeeee;
-  z-index: 500;
+  background-color: #fff;
+  z-index: 100;
 `;
 
 const LogoImg = styled.img`
