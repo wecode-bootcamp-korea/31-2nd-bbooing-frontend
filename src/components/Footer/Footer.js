@@ -26,10 +26,10 @@ const Footer = () => {
                 평일 10:00 ~ 17:00 점심 13:00 ~14:00
               </FooterMarginTopPtag>
             </li>
-            <SnsImg alt="sns" src="images\free-icon-network-7185719.png" />
-            <SnsImg alt="sns" src="images\free-icon-youtube-1384012.png" />
-            <SnsImg alt="sns" src="images\premium-icon-facebook-665209.png" />
-            <SnsImg alt="sns" src="images\premium-icon-instagram-665211.png" />
+            <SnsImg alt="sns" src="/images/free-icon-network-7185719.png" />
+            <SnsImg alt="sns" src="/images/free-icon-youtube-1384012.png" />
+            <SnsImg alt="sns" src="/images/premium-icon-facebook-665209.png" />
+            <SnsImg alt="sns" src="/images/premium-icon-instagram-665211.png" />
           </li>
         </GlobalUl>
         <FooterBottom>
