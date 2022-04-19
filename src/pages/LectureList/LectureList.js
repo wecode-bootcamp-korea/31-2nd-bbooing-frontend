@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import useWishList from '../../hooks/useWishList';
 
 import Card from '../../components/Card/Card';
 
@@ -13,6 +14,7 @@ const LectureList = () => {
   const { search } = useLocation();
   const navigate = useNavigate();
   const filterDom = useRef();
+  const wishList = useWishList();
 
   const [cardList, setCardList] = useState([]);
   const [isContentsShowed, setIsContentsShowed] = useState(false);
@@ -22,14 +24,12 @@ const LectureList = () => {
   const { limit, offset } = pageNum;
 
   const getCardListData = useCallback(async () => {
-    const res = search.includes('title')
-      ? await fetch(
-          `${BASE_URL}/main/search${search}?offset=${offset}&limit=${limit}`
-        )
-      : await fetch(
-          `${BASE_URL}/main/lectures${search}?offset=${offset}&limit=${limit}`
-        );
+    const res = await fetch(
+      `${BASE_URL}/main/search${search}&offset=${offset}&limit=${limit}`
+    );
+
     const data = await res.json();
+
     setCardList(data.result);
   }, [search, offset, limit]);
 
@@ -42,7 +42,7 @@ const LectureList = () => {
     setPageNum({ ...pageNum, limit: LIMIT + offset, offset: offset });
   };
 
-  const makeQueryString = e => {
+  const makeQueryString = () => {
     const queryString = clickedCheckList
       .map(({ id, content, sortType }) => {
         return sortType === 'category' || sortType === 'types'
@@ -54,7 +54,7 @@ const LectureList = () => {
       })
       .join('');
 
-    navigate(`?${queryString}&offset=${offset}&limit=${limit}`);
+    navigate(`?${queryString}`);
   };
 
   const handleCheckList = (e, content, idx, sort_type) => {
@@ -119,8 +119,17 @@ const LectureList = () => {
 
       <CardList>
         {cardList &&
+          wishList &&
           cardList.map(card => {
-            return <Card type="big" key={card.id} card={card} />;
+            return (
+              <Card
+                type="big"
+                key={card.id}
+                card={card}
+                isWishList={wishList.includes(card.lecture_id)}
+                getCardListData={getCardListData}
+              />
+            );
           })}
       </CardList>
 
@@ -197,6 +206,7 @@ const FILTER_CATEGORYS = [
 const Wrapper = styled.div`
   ${({ theme }) => theme.wrapper()}
   position : relative;
+  padding-bottom: 20px;
 `;
 
 const CardList = styled.div`
@@ -236,7 +246,7 @@ const Contents = styled.div`
   border: 1px solid #dbdbdb;
   border-radius: 3px;
   background-color: white;
-  z-index: 100;
+  z-index: 200;
 
   &.show {
     display: block;
@@ -267,6 +277,7 @@ const Button = styled.button`
 const PageBtns = styled.div`
   position: absolute;
   left: 50%;
+  bottom: -30px;
   transform: translateX(-50%);
 `;
 

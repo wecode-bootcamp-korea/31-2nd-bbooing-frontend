@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   getToken,
@@ -10,12 +11,19 @@ import backgroundimg from '../../assets/premium-icon-magnifier-2311526.png';
 import styled from 'styled-components';
 
 const Nav = () => {
-  const validtoken = getToken();
-
   const navigate = useNavigate();
+  const [term, setTerm] = useState('');
+
+  const validtoken = getToken();
 
   const goToMain = () => {
     navigate('/');
+  };
+
+  const searchTerm = e => {
+    e.preventDefault();
+    setTerm(e.target.value);
+    navigate(`/lectures?title=${term}`);
   };
 
   const kakaoLog = () => {
@@ -43,10 +51,12 @@ const Nav = () => {
         <GnbVod to="/vod">브오디VOD</GnbVod>
       </div>
       <SearchArea>
-        <form name="search">
+        <form name="search" onSubmit={searchTerm}>
           <SearchInput
             type="text"
             placeholder="배우고 싶은 재능을 찾아 보세요."
+            value={term}
+            onChange={e => setTerm(e.target.value)}
           />
           <SearchGlass />
         </form>
