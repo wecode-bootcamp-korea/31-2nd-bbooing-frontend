@@ -1,20 +1,28 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import useWishList from '../../../hooks/useWishList';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import Card from '../../../components/Card/Card';
+import { BASE_URL } from '../../../config';
 
-const LectureSlide = () => {
+const LectureSlide = ({ typesId }) => {
   const [cardList, setCardList] = useState([]);
-  const getCardListData = async () => {
-    const res = await fetch('/data/cards.json');
+  const wishList = useWishList();
+
+  const getCardListData = useCallback(async () => {
+    const res = await fetch(`${BASE_URL}/main`);
+
     const data = await res.json();
 
-    setCardList(data);
-  };
+    setCardList(
+      data.total_list.filter(list => list.type_ids[0] === parseInt(typesId))
+    );
+  }, [typesId]);
+
   useEffect(() => {
     getCardListData();
-  }, []);
+  }, [getCardListData]);
 
   const settings = {
     slide: <Card />,
@@ -34,9 +42,15 @@ const LectureSlide = () => {
   return (
     <Wrapper>
       <StyledSlide {...settings}>
-        {cardList?.map(card => (
-          <Card key={card.id} card={card} />
-        ))}
+        {wishList &&
+          cardList?.map(card => (
+            <Card
+              key={card.lecture_id}
+              card={card}
+              isWishList={wishList.includes(card.lecture_id)}
+              getCardListData={getCardListData}
+            />
+          ))}
       </StyledSlide>
     </Wrapper>
   );

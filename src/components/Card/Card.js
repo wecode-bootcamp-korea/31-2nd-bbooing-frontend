@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import useWishListCheck from '../../hooks/useWishListCheck';
 
 import styled from 'styled-components';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
@@ -9,35 +8,30 @@ import { theme } from '../../styles/theme';
 import { API } from '../../config';
 import { getToken } from '../../utils';
 
-const Card = ({ card, type }) => {
+const Card = ({ card, type, isWishList, getCardListData }) => {
   const heartBtn = useRef();
   const navigate = useNavigate();
-  const isWishList = useWishListCheck();
 
   const [isLiked, setIsLiked] = useState(isWishList);
-  const { id, types, category, title, price, images, likes } = card;
+  const { lecture_id, type_names, category, title, price, images, likes } =
+    card;
 
   const addToWish = () => {
-    fetch(`${API.carts}`, {
+    fetch(`${API.carts}/${lecture_id}`, {
       method: 'POST',
       headers: {
         Authorization: getToken(),
       },
-      body: JSON.stringify({
-        user_id: 1,
-        lectures_id: id,
-      }),
     }).then(res => {
       setIsLiked(res.status === 201);
+      getCardListData();
     });
-
-    setIsLiked(true);
   };
 
   const goToDetail = e => {
     if (heartBtn.current.contains(e.target)) return;
 
-    navigate(`/lectures/${id}`);
+    navigate(`/lectures/${lecture_id}`);
   };
 
   return (
@@ -49,10 +43,12 @@ const Card = ({ card, type }) => {
             {isLiked ? <FaHeart /> : <FaRegHeart />}
           </HeartBtn>
         </Thumnail>
-        <CategoryTag type={types}>{types}</CategoryTag>
+        {type_names && (
+          <CategoryTag type={type_names[0]}>{type_names[0]}</CategoryTag>
+        )}
         <p>{title}</p>
         <Category>{category}</Category>
-        <h3>{price}원</h3>
+        <Price>{price}원</Price>
         <Likes type={type}>
           <StyledHeart /> {likes}
         </Likes>
@@ -67,8 +63,9 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  margin: 10px;
+  margin: 20px 10px;
   width: ${({ type }) => (type ? '235px' : '200px')};
+  height: 270px;
   cursor: pointer;
 
   p {
@@ -102,7 +99,7 @@ const HeartBtn = styled.button`
   right: 10px;
   font-size: 22px;
   font-weight: ${theme.weightBold};
-  color: #fff;
+  color: ${theme.red};
   background-color: transparent;
   cursor: pointer;
   border: 0;
@@ -113,8 +110,8 @@ const CategoryTag = styled.span`
   padding: 3px;
   background-color: ${({ type, theme }) => {
     const colorForType = {
-      VOD: theme.purple,
-      오프라인: theme.red,
+      오프라인: theme.purple,
+      VOD: theme.red,
       전자책: theme.green,
     };
 
@@ -126,12 +123,19 @@ const CategoryTag = styled.span`
 `;
 
 const Category = styled.p`
+  position: absolute;
+  bottom: 27px;
   color: ${theme.fontSub};
+`;
+
+const Price = styled.h3`
+  position: absolute;
+  bottom: 0px;
 `;
 
 const Likes = styled.span`
   position: absolute;
-  bottom: ${({ type }) => (type ? '10px' : '-10px')};
+  bottom: -10px;
   font-size: 14px;
   font-weight: ${theme.weightBold};
 `;

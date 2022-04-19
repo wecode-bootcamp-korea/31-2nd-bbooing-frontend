@@ -19,13 +19,18 @@ const Main = () => {
 
   const goToCategoryList = e => {
     const { id } = e.target;
-
-    navigate(`/lectures?category=${id}`);
+    navigate(`/lectures?category_id=${id}`);
   };
 
   const goToTypeList = e => {
     const { id } = e.target;
-    navigate(`/lectures?type=${id}`);
+
+    navigate(`/lectures?types_id=${id}`);
+  };
+
+  const goToDetail = e => {
+    const { id } = e.target;
+    navigate(`/lectures/${id}`);
   };
 
   return (
@@ -78,11 +83,11 @@ const Main = () => {
         <MainContainer>
           <LectureContainer>
             <h3>지금! 뜨고 있는 전자책 클래스</h3>
-            <LectureSlide />
+            <LectureSlide typesId="3" />
             <h3>당장 들어야 할 오프라인 클래스</h3>
-            <LectureSlide />
+            <LectureSlide typesId="1" />
             <h3>뿌잉 VOD, 같이하면 더 쉬우니까</h3>
-            <LectureSlide />
+            <LectureSlide typesId="2" />
           </LectureContainer>
           <ProfileContainer>
             <Profile>
@@ -109,12 +114,14 @@ const Main = () => {
             </Profile>
             <Search>
               <h3>핫 트렌드</h3>
-              <span>#강의 이름</span>
-              <span>#강의 이름</span>
-              <span>#강의 이름</span>
-              <span>#강의 이름</span>
-              <span>#강의 이름</span>
-              <span>#강의 이름</span>
+
+              {TREND_LIST.map(({ lectureId, title }) => {
+                return (
+                  <span key={lectureId} id={lectureId} onClick={goToDetail}>
+                    #{title}
+                  </span>
+                );
+              })}
             </Search>
           </ProfileContainer>
         </MainContainer>
@@ -127,7 +134,7 @@ export default Main;
 
 const CATEGORY_CONTENTS = {
   1: ['국내', '일본', '유럽', '미국'],
-  2: ['한식', '중식', '일식', '커피 · 디저트'],
+  2: ['한식', '양식', '일식', '커피 · 디저트'],
   3: ['드로잉', '미술', '글쓰기', '사진'],
   4: ['러닝', '피트니스', '등산', '수영'],
 };
@@ -138,6 +145,15 @@ const TYPES = [
   { icon: <FaLocationArrow id="1" />, title: '오프라인' },
   { icon: <FaVideo id="2" />, title: 'VOD' },
   { icon: <FaBook id="3" />, title: '전자책' },
+];
+
+const TREND_LIST = [
+  { lectureId: 37, title: '재혁재혁의 러닝 보강운동 클래스!' },
+  { lectureId: 43, title: '북한산 다람쥐 효정효정과 종주!' },
+  { lectureId: 44, title: '쉐르파 듀오 보니강호의 등산 입문!' },
+  { lectureId: 41, title: '미류공주와 함께 다리를 찢어보자!' },
+  { lectureId: 48, title: '어인 정수정수의 아가미 호흡법!' },
+  { lectureId: 12, title: '영완민수의 민수와의 미국여행' },
 ];
 
 const Wrapper = styled.div`
