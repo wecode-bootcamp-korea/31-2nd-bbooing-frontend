@@ -18,11 +18,19 @@ const Nav = () => {
     navigate('/');
   };
 
-  const kakaoLogout = () => {
-    removeProfile();
-    removeNickName();
-    removeToken();
-    goToMain();
+  const kakaoLog = () => {
+    window.Kakao.init(process.env.REACT_APP_KAKAO);
+    if (!window.Kakao.Auth.getAccessToken()) {
+      alert('Not logged in.');
+      return;
+    }
+    window.Kakao.Auth.logout(function () {
+      removeProfile();
+      removeNickName();
+      removeToken();
+      goToMain();
+      alert('logout ok\naccess token -> ' + window.Kakao.Auth.getAccessToken());
+    });
   };
 
   return (
@@ -48,7 +56,7 @@ const Nav = () => {
           <LoginMenu to="/login">로그인</LoginMenu>
         ) : (
           <LoginWrap>
-            <LogoutBtn onClick={kakaoLogout}>로그아웃</LogoutBtn>
+            <LogoutBtn onClick={kakaoLog}>로그아웃</LogoutBtn>
             <LoginMenu to="/wish-list">찜</LoginMenu>
             <ProfileImg src={getProfile()} alt="카카오프로필임시" />
           </LoginWrap>
