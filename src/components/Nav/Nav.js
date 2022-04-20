@@ -43,7 +43,6 @@ export default Nav;
 const WrapperHead = styled.div`
   display: flex;
   text-align: center;
-  position: sticky;
   top: 0;
   align-items: center;
   width: 1100px;
