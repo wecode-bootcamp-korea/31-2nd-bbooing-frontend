@@ -25,3 +25,15 @@ export const setNickname = nickname => {
 export const getNickName = () => {
   return localStorage.getItem(keyNickName);
 };
+
+export const removeProfile = () => {
+  return localStorage.removeItem(keyProfile);
+};
+
+export const removeNickName = () => {
+  return localStorage.removeItem(keyNickName);
+};
+
+export const removeToken = () => {
+  return localStorage.removeItem(token);
+};
