@@ -8,7 +8,7 @@ import LectureList from './pages/LectureList/LectureList';
 import LectureDetail from './pages/LectureDetail/LectureDetail';
 import Nav from './components/Nav/Nav';
 import Footer from './components/Footer/Footer';
-
+import Review from './components/Review/Review';
 const Router = () => {
   return (
     <BrowserRouter>
@@ -20,6 +20,7 @@ const Router = () => {
         <Route path="/lectures" element={<LectureList />} />
         <Route path="/lectures/:id" element={<LectureDetail />} />
         <Route path="/wish-list" element={<WishList />} />
+        <Route path="/review" element={<Review />} />
       </Routes>
       <Footer />
     </BrowserRouter>
