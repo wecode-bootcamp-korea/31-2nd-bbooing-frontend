@@ -1,6 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import API from '../../config';
-import { setToken, setProfile, setNickname } from '../../utils';
+import {
+  setToken,
+  setProfile,
+  setNickname,
+  removeNickName,
+  removeProfile,
+  removeToken,
+} from '../../utils';
 import styled from 'styled-components';
 
 const Login = () => {
@@ -30,6 +37,21 @@ const Login = () => {
     });
   }
 
+  const kakaoLogout = () => {
+    window.Kakao.API.request({
+      url: '/v1/user/unlink',
+      success: function (res) {
+        removeProfile();
+        removeNickName();
+        removeToken();
+        alert('로그아웃');
+      },
+      fail: function (err) {
+        alert('실패: ' + JSON.stringify(err));
+      },
+    });
+  };
+
   const goToMain = () => {
     alert('로그인에 성공하였습니다.');
     navigate('/');
@@ -49,6 +71,7 @@ const Login = () => {
             src="/images/kakao_login_medium_wide.png"
           />
         </KaKaoBtn>
+        <button onClick={kakaoLogout}>로그아웃</button>
       </LoginBox>
     </LoginSection>
   );
