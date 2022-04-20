@@ -1,10 +1,29 @@
-import { Link } from 'react-router-dom';
-import { getToken, getProfile } from '../../utils';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  getToken,
+  getProfile,
+  removeProfile,
+  removeNickName,
+  removeToken,
+} from '../../utils';
 import backgroundimg from '../../assets/premium-icon-magnifier-2311526.png';
 import styled from 'styled-components';
 
 const Nav = () => {
   const validtoken = getToken();
+
+  const navigate = useNavigate();
+
+  const goToMain = () => {
+    navigate('/');
+  };
+
+  const kakaoLogout = () => {
+    removeProfile();
+    removeNickName();
+    removeToken();
+    goToMain();
+  };
 
   return (
     <WrapperHead>
@@ -29,6 +48,7 @@ const Nav = () => {
           <LoginMenu to="/login">로그인</LoginMenu>
         ) : (
           <LoginWrap>
+            <LogoutBtn onClick={kakaoLogout}>로그아웃</LogoutBtn>
             <LoginMenu to="/wish-list">찜</LoginMenu>
             <ProfileImg src={getProfile()} alt="카카오프로필임시" />
           </LoginWrap>
@@ -43,7 +63,6 @@ export default Nav;
 const WrapperHead = styled.div`
   display: flex;
   text-align: center;
-  position: sticky;
   top: 0;
   align-items: center;
   width: 1100px;
@@ -93,9 +112,9 @@ const SearchInput = styled.input`
 const SearchGlass = styled.button`
   position: absolute;
   right: 8px;
-  top: 2px;
-  width: 40px;
-  height: 40px;
+  top: 5px;
+  width: 30px;
+  height: 30px;
   border: none;
   background: url(${backgroundimg}) no-repeat center/cover;
 `;
@@ -113,6 +132,16 @@ const LoginMenu = styled(Link)`
   margin-right: 10px;
   font-size: ${({ theme }) => theme.fontMicro};
   text-decoration: none;
+`;
+
+const LogoutBtn = styled.p`
+  margin-right: 10px;
+  background: #fff;
+  border: 0;
+  font-size: ${({ theme }) => theme.fontMicro};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const ProfileImg = styled.img`
