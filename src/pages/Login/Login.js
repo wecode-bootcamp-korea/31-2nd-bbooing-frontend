@@ -7,7 +7,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   function kakaLogin() {
-    window.Kakao.init(process.env.REACT_APP_KAKAO);
     window.Kakao.Auth.login({
       scope: 'profile_nickname, profile_image',
       success: function (res) {
