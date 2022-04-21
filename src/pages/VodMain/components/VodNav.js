@@ -1,17 +1,39 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  getToken,
+  getProfile,
+  removeProfile,
+  removeNickName,
+  removeToken,
+} from '../../../utils';
 import { FiSearch } from 'react-icons/fi';
+import styled from 'styled-components';
 
 const VodNav = () => {
+  const validtoken = getToken();
+
+  const navigate = useNavigate();
+
+  const goToMain = () => {
+    navigate('/');
+  };
+
+  const kakaoLogout = () => {
+    removeProfile();
+    removeNickName();
+    removeToken();
+    goToMain();
+  };
   return (
     <Container>
       <Wrapper>
         <Left>
-          <LinkMain>
+          <LinkMain to="/">
             <Logo src="/images/logo.svg" />
           </LinkMain>
-          <Menu>홈HOME</Menu>
-          <Menu>브오디VOD</Menu>
+          <PageMenu to="/">홈HOME</PageMenu>
+          <PageMenu to="/vod">브오디VOD</PageMenu>
         </Left>
         <Right>
           <SearchBar>
@@ -20,7 +42,16 @@ const VodNav = () => {
               <FiSearch />
             </SearchButton>
           </SearchBar>
-          <LoginMenu>로그인</LoginMenu>
+
+          {!validtoken ? (
+            <LoginMenu to="/login">로그인</LoginMenu>
+          ) : (
+            <LoginWrap>
+              <LogoutButton onClick={kakaoLogout}>로그아웃</LogoutButton>
+              <LoginMenu to="/wish-list">찜</LoginMenu>
+              <ProfileImg src={getProfile()} alt="카카오프로필임시" />
+            </LoginWrap>
+          )}
         </Right>
       </Wrapper>
     </Container>
@@ -53,11 +84,12 @@ const Logo = styled.img`
   filter: invert(100%);
   margin-right: 40px;
 `;
-const Menu = styled.a`
+const PageMenu = styled(Link)`
   color: #fff;
   opacity: 0.8;
   margin-right: 20px;
   font-size: 16px;
+  text-decoration: none;
   cursor: pointer;
   &:last-child {
     font-weight: bold;
@@ -92,11 +124,35 @@ const SearchButton = styled.button`
   font-size: 20px;
   cursor: pointer;
 `;
-const LoginMenu = styled.a`
+const LoginMenu = styled(Link)`
   color: #fff;
+  text-decoration: none;
   font-size: 14px;
   margin-left: 20px;
   cursor: pointer;
+`;
+const LogoutButton = styled.button`
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  margin-left: 20px;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+`;
+
+const LoginWrap = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ProfileImg = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #fff;
+  margin-left: 20px;
 `;
 
 export default VodNav;
