@@ -27,7 +27,6 @@ const Nav = () => {
   };
 
   const kakaoLog = () => {
-    window.Kakao.init(process.env.REACT_APP_KAKAO);
     if (!window.Kakao.Auth.getAccessToken()) {
       alert('Not logged in.');
       return;
