@@ -69,7 +69,6 @@ const LectureList = () => {
   };
 
   useOutsideClick(filterDom, () => setIsContentsShowed(false));
-
   return (
     <Wrapper>
       <FilterList ref={filterDom}>
@@ -132,7 +131,6 @@ const LectureList = () => {
             );
           })}
       </CardList>
-
       {((limit === 24 && offset === 12) || cardList?.length === 12) && (
         <PageBtns>
           <PageBtn onClick={() => updatePageNum(0)}>1</PageBtn>

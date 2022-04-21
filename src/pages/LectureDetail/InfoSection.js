@@ -6,11 +6,36 @@ const InfoSection = ({ notice, summary, recommendation }) => {
     <div>
       <Section>
         <Title>공지사항</Title>
-        <Description>{notice}</Description>
+        <Description>
+          {String(notice)
+            .split(';')
+            .map(line => {
+              return (
+                <>
+                  {line}
+                  <br />
+                </>
+              );
+            })}
+        </Description>
       </Section>
       <Section>
-        <Title>클래스 요약</Title>
-        <Description>{summary}</Description>
+        <Title>
+          클래스
+          <br /> 요약
+        </Title>
+        <Description>
+          {String(summary)
+            .split(';')
+            .map(line => {
+              return (
+                <>
+                  {line}
+                  <br />
+                </>
+              );
+            })}
+        </Description>
       </Section>
       <Section>
         <Title>
@@ -18,7 +43,18 @@ const InfoSection = ({ notice, summary, recommendation }) => {
           <br />
           들으면 좋아요.
         </Title>
-        <Description>{recommendation}</Description>
+        <Description>
+          {String(recommendation)
+            .split(';')
+            .map(line => {
+              return (
+                <>
+                  {line}
+                  <br />
+                </>
+              );
+            })}
+        </Description>
       </Section>
     </div>
   );

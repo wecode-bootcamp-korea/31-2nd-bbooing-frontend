@@ -14,15 +14,15 @@ const useWishList = () => {
     })
       .then(res => res.json())
       .then(data => {
-        setWishList(data.results.map(data => data.like_id));
+        setWishList(data && data.results.map(data => data.lecture_id));
       });
   };
 
   useEffect(() => {
-    getWishListData();
+    getToken() && getWishListData();
   }, []);
 
-  if (wishList.length > 0) return wishList;
+  return wishList.length > 0 ? wishList : [];
 };
 
 export default useWishList;

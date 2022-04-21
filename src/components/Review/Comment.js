@@ -1,21 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BASE_URL } from '../../config';
+import { getToken } from '../../utils';
 
-const Comment = ({ review, setReviews, reviews, getReviewData }) => {
+const Comment = ({ review, getReviewData }) => {
   const { user, content, create, profile_image, review_image, review_id } =
     review;
 
   const deleteReview = () => {
-    fetch(`${BASE_URL}/reviews/${review_id}`, { method: 'DELETE' }).then(
-      res => {
-        if (res.ok) {
-          alert('삭제되었습니다.');
+    fetch(`${BASE_URL}/reviews/${review_id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: getToken(),
+      },
+    }).then(res => {
+      if (res.ok) {
+        alert('삭제되었습니다.');
 
-          getReviewData();
-        }
+        getReviewData();
       }
-    );
+    });
   };
   return (
     <Container>

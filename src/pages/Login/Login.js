@@ -16,11 +16,13 @@ const Login = () => {
             Authorization: res.access_token,
           },
         })
-          .then(res => res.json())
           .then(res => {
-            const restoken = res.access_token.access_token;
-            const profile = res.access_token.profile_image;
-            const nickname = res.access_token.kakao_nickname;
+            return res.json();
+          })
+          .then(res => {
+            const restoken = res.access_token;
+            const profile = res.profile_image;
+            const nickname = res.kakao_nickname;
             setToken(restoken);
             setProfile(profile);
             setNickname(nickname);
