@@ -31,7 +31,7 @@ const Card = ({ card, type, isWishList, getCardListData }) => {
   const goToDetail = e => {
     if (heartBtn.current.contains(e.target)) return;
 
-    navigate(`/lectures/${lecture_id}`);
+    navigate(`/lectures/${lecture_id}`, { state: { isWishList: isWishList } });
   };
 
   return (
