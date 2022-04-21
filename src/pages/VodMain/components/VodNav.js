@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   getToken,
@@ -15,8 +15,17 @@ const VodNav = () => {
 
   const navigate = useNavigate();
 
+  const [term, setTerm] = useState('');
+
   const goToMain = () => {
     navigate('/');
+  };
+
+  const searchTerm = e => {
+    e.preventDefault();
+    setTerm(e.target.value);
+    navigate(`/lectures?title=${term}`);
+    setTerm('');
   };
 
   const kakaoLogout = () => {
@@ -37,10 +46,16 @@ const VodNav = () => {
         </Left>
         <Right>
           <SearchBar>
-            <SearchInput placeholder="검색어를 입력해주세요." />
-            <SearchButton>
-              <FiSearch />
-            </SearchButton>
+            <form onSubmit={searchTerm}>
+              <SearchInput
+                placeholder="검색어를 입력해주세요."
+                value={term}
+                onChange={e => setTerm(e.target.value)}
+              />
+              <SearchButton>
+                <FiSearch />
+              </SearchButton>
+            </form>
           </SearchBar>
 
           {!validtoken ? (

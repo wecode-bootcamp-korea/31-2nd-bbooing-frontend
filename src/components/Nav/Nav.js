@@ -24,6 +24,7 @@ const Nav = () => {
     e.preventDefault();
     setTerm(e.target.value);
     navigate(`/lectures?title=${term}`);
+    setTerm('');
   };
 
   const kakaoLog = () => {

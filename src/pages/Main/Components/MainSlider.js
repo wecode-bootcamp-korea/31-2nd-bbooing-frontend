@@ -66,7 +66,7 @@ const StyledSlide = styled(Slider)`
 
   .slick-arrow {
     padding: 4px 6px;
-    border: 1px solid #dbdbdb;
+    transform: translate(30px, 150px);
     background-color: transparent;
     color: white;
     border-radius: 3px;

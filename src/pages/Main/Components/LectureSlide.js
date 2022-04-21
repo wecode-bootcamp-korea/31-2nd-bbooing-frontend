@@ -84,16 +84,23 @@ const StyledSlide = styled(Slider)`
   }
 
   .slick-arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 4px 6px;
-    border: 1px solid #dbdbdb;
-    background-color: transparent;
-    border-radius: 3px;
+    transform: translate(16px, 120px);
+    border-radius: 50%;
+  }
+
+  .slick-arrow::before {
+    border-radius: 50%;
+    color: black;
   }
 
   .slick-prev {
     position: absolute;
     top: -30px;
-    right: -10px;
+    right: 0px;
     cursor: pointer;
   }
 

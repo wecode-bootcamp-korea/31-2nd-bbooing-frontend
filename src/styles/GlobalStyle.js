@@ -30,6 +30,9 @@ const GlobalStyle = createGlobalStyle`
       font-weight: ${props => props.theme.weightRegular};
       color: ${props => props.theme.fontMain};
     }
+    img {
+      object-fit: cover;
+    }
 `;
 
 export default GlobalStyle;

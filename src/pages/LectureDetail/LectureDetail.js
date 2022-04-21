@@ -7,21 +7,21 @@ import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import InfoSection from './InfoSection';
 import { BASE_URL } from '../../config';
+import Review from '../../components/Review/Review';
 
 const LectureDetail = () => {
   const { state } = useLocation();
   const [lecture, setLecture] = useState({});
-  const params = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
-    fetch(`${BASE_URL}/lectures/${params.id}`, {
-      headers: {
-        Authorization: '',
-      },
-    })
+    fetch(`${BASE_URL}/lectures/${id}`)
       .then(res => res.json())
-      .then(res => setLecture(res.message));
-  }, [params.id]);
+      .then(res => {
+        setLecture(res.message);
+      });
+  }, [id]);
+
   return (
     <div>
       <ScrollNav />
@@ -45,7 +45,9 @@ const LectureDetail = () => {
           <div id="review">
             <Section>
               <Title>리뷰</Title>
-              <ReviewArea>리뷰 컴포넌트</ReviewArea>
+              <ReviewArea>
+                <Review id={id} />
+              </ReviewArea>
             </Section>
           </div>
         </Left>
@@ -54,7 +56,7 @@ const LectureDetail = () => {
             schedule={lecture.schedule}
             region={lecture.region}
             isWishList={state && state.isWishList}
-            lectureID={params.id}
+            lectureID={id}
           />
         </Right>
       </Wrapper>

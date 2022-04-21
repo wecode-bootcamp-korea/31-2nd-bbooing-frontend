@@ -1,37 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BASE_URL } from '../../../config';
+import { getToken } from '../../../utils';
 
-const WishContents = ({ lecture, setLectures }) => {
+const WishContents = ({ lecture, getWishListData }) => {
   const { lecture_id, thumbnail_url, name, price, summary } = lecture;
 
   const deleteLecture = () => {
-    fetch(`http://10.58.5.200:8000/carts/like/${lecture_id}`, {
+    fetch(`${BASE_URL}/carts/like/${lecture_id}`, {
       method: 'DELETE',
+      headers: {
+        Authorization: getToken(),
+      },
     }).then(res => {
       if (res.ok) {
         alert('삭제되었습니다!');
-        fetch('http://10.58.5.200:8000/carts/like')
-          .then(res => res.json())
-          .then(data => setLectures(data.results));
+        getWishListData();
       }
     });
   };
 
   return (
-    <Container>
-      <Contents>
-        <img src={thumbnail_url} alt="" />
-        <DetailContents>
-          <h3>{name}</h3>
-          <p>{summary}</p>
-          <Button>
-            <font>₩</font>
-            <span>{price.split('').splice(0, 6).join('')}</span>
-            <button onClick={deleteLecture}>삭제</button>
-          </Button>
-        </DetailContents>
-      </Contents>
-    </Container>
+    <Contents>
+      <img src={thumbnail_url} alt="" />
+      <DetailContents>
+        <h3>{name}</h3>
+        <p>{summary}</p>
+        <Button>
+          <font>₩</font>
+          <span>{price.split('').splice(0, 5).join('')}</span>
+          <button onClick={deleteLecture}>삭제</button>
+        </Button>
+      </DetailContents>
+    </Contents>
   );
 };
 
@@ -42,6 +43,7 @@ const Contents = styled.div`
   border-right: none;
   border-left: none;
   img {
+    flex: none;
     width: 320px;
     height: 180px;
     margin-left: 10px;
@@ -49,9 +51,11 @@ const Contents = styled.div`
   padding: 30px 0px 30px 0px;
 `;
 const DetailContents = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  flex: 1;
   h3 {
     letter-spacing: -0.6px;
     font-weight: 400;
@@ -65,25 +69,36 @@ const DetailContents = styled.div`
 `;
 const Button = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
-
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  > * {
+    display: inline-block;
+  }
   font {
     font-size: 15px;
-    position: absolute;
-    right: 400px;
     color: #ff005a;
+    margin-right: 4px;
   }
   span {
     font-size: 20px;
-    position: absolute;
-    right: 310px;
+    font-weight: bold;
     color: #ff005a;
   }
   button {
-    position: absolute;
-    right: 260px;
+    display: inline-block;
+    font-weight: bold;
+    border: 0;
+    border-radius: 4px;
+    padding: 4px 12px;
+    height: 32px;
+    font-size: 15px;
+    color: #fff;
+    background-color: ${({ theme }) => theme.red};
     margin-left: 10px;
+    cursor: pointer;
   }
 `;
 const Container = styled.div`

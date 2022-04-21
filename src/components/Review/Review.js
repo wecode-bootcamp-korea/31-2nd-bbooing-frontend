@@ -2,19 +2,18 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Comment from './Comment';
 import { BASE_URL } from '../../config';
+import { getToken } from '../../utils';
 
-const Review = () => {
+const Review = ({ id }) => {
   const [newReview, setNewReview] = useState({ comment: '', image: '' });
   const [reviews, setReviews] = useState([]);
 
   const getReviewData = async () => {
-    const res = await fetch(`${BASE_URL}/lectures/1`);
+    const res = await fetch(`${BASE_URL}/lectures/${id}`);
     const data = await res.json();
 
     setReviews(data.message.reviews);
   };
-
-  console.log(reviews);
 
   useEffect(() => {
     getReviewData();
@@ -29,8 +28,11 @@ const Review = () => {
     // for (let value of formData.values()) console.log(value);
     // for (const keyValue of formData) console.log(keyValue);
 
-    fetch(`${BASE_URL}/reviews/lecture/1`, {
+    fetch(`${BASE_URL}/reviews/lecture/${id}`, {
       method: 'POST',
+      headers: {
+        Authorization: getToken(),
+      },
       body: formData,
     }).then(res => {
       if (res.ok) {
@@ -40,14 +42,9 @@ const Review = () => {
       }
     });
   };
-
   return (
     <ReviewContainer>
       <ReviewBox>
-        <Profile>
-          <img src={reviews.profile_image} alt="사진" />
-          {console.log(reviews.profile_image)}
-        </Profile>
         <Form onSubmit={uploadReview}>
           <div>
             <textarea

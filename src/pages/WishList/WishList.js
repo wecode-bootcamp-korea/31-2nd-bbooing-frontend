@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import WishContents from './WishComponent/WishContents';
 import API from '../../config';
+import { getToken } from '../../utils';
 
 const WishList = () => {
   const [lectures, setLectures] = useState([]);
 
   const getWishListData = () => {
-    fetch(`${API.carts}`)
+    fetch(`${API.carts}`, {
+      headers: {
+        Authorization: getToken(),
+      },
+    })
       .then(res => res.json())
       .then(res => {
         setLectures(res.results);
@@ -30,7 +35,7 @@ const WishList = () => {
           lectures.map(lecture => (
             <WishContents
               lecture={lecture}
-              setLectures={setLectures}
+              getWishListData={getWishListData}
               key={lecture}
             />
           ))}
