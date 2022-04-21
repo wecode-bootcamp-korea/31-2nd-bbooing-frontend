@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -19,26 +21,6 @@ const VodMain = () => {
     getVodListData();
   }, []);
 
-  const videoSettings = {
-    dots: false,
-    fade: true,
-    infinite: true,
-    navigator: true,
-    slidesToShow: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    cssEase: 'linear',
-  };
-  const thumbSettings = {
-    dots: false,
-    fade: true,
-    navigator: true,
-    infinite: true,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    cssEase: 'linear',
-    focusOnSelect: true,
-  };
   return (
     <VodContain>
       <VodNav />
@@ -65,7 +47,9 @@ const VodMain = () => {
                 </video>
                 <VideoInfo>
                   <VideoTitle>{vod.title}</VideoTitle>
-                  <DetailButton>자세히보기</DetailButton>
+                  <DetailButton to={`lectures/${vod.id}`}>
+                    자세히보기
+                  </DetailButton>
                 </VideoInfo>
               </Video>
             );
@@ -165,7 +149,7 @@ const VideoList = styled.div`
 const Navigation = styled.div`
   position: absolute;
   bottom: 100px;
-  right: 60px;
+  right: 70px;
   width: calc(50% - 90px);
   z-index: 100;
   .slick-arrow {
@@ -272,7 +256,8 @@ const VideoTitle = styled.h2`
   color: #fff;
   letter-spacing: -0.75px;
 `;
-const DetailButton = styled.button`
+const DetailButton = styled(Link)`
+  display: inline-block;
   height: 42px;
   padding: 0 42px;
   border: 1px solid #ffffff;
@@ -281,12 +266,14 @@ const DetailButton = styled.button`
   line-height: 40px;
   background-color: transparent;
   transition: all 0.2s;
+  text-decoration: none;
   color: #fff;
   cursor: pointer;
 
   &:hover {
     background-color: ${({ theme }) => theme.purple};
     border-color: ${({ theme }) => theme.purple};
+    font-weight: bold;
   }
 `;
 
